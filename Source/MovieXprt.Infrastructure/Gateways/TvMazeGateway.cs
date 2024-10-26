@@ -3,25 +3,38 @@
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
-using MovieXprt.Common.Models;
-
+using Microsoft.Extensions.Logging;
+using MovieXprt.Common.Contracts;
 public interface ITvMazeGateway
 {
-    public Task<ICollection<Show>> GetSchedule(DateOnly from, string? countrycode);
+    public Task<ICollection<TvMazeShow>> GetSchedule(DateOnly from, string? countrycode, CancellationToken ct);
 }
 
 public class TvMazeGateway(
-    IFlurlClientCache flurlClientCache
+    IFlurlClientCache flurlClientCache,
+    ILogger<TvMazeGateway> logger
     ) : ITvMazeGateway
 {
     private readonly IFlurlClient _flurlClient = flurlClientCache.Get("TvMazeClient") ?? throw new ArgumentNullException(nameof(flurlClientCache));
+    private readonly ILogger<TvMazeGateway> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-    public async Task<ICollection<Show>> GetSchedule(DateOnly from, string? countrycode)
+    public async Task<ICollection<TvMazeShow>> GetSchedule(DateOnly from, string? countrycode, CancellationToken ct)
     {
-        return await _flurlClient.Request("web", "shows")
-            .AppendPathSegment("schedule")
-            .SetQueryParam("country", countrycode, NullValueHandling.Remove)
-            .SetQueryParam("date", from.ToString("yyyy-MM-dd"))
-            .GetJsonAsync<ICollection<Show>>();
+        try
+        {
+            var fromDate = from.ToString("yyyy-MM-dd");
+
+            return await _flurlClient.Request("schedule", "web")
+              .AllowHttpStatus(429, 200)
+              .SetQueryParam("country", countrycode, NullValueHandling.Remove)
+              .SetQueryParam("date", fromDate)
+              .GetJsonAsync<ICollection<TvMazeShow>>(default, ct);
+        }
+        catch (FlurlHttpException e)
+        {
+            this._logger.LogError(e, "Error getting schedule from TvMaze");
+            return [];
+        }
+
     }
 }

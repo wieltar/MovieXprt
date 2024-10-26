@@ -4,6 +4,6 @@
     {
         public const string TvMaze = "TvMaze";
 
-        public string BaseUrl { get; init; }
+        public string BaseUrl { get; init; } = string.Empty;
     }
 }

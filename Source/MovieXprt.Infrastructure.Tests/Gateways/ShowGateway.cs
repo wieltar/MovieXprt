@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieXprt.Application
+namespace MovieXprt.Infrastructure.Tests.Gateways
 {
-    internal class ShowMutationFacade
+    internal class ShowGateway
     {
     }
 }

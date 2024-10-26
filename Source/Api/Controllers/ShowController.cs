@@ -1,28 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieXprt.Application.UseCases;
+using MovieXprt.Common.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ShowController(
-            IQueryShowsUsecase queryShowsUsecase
+            IGetScheduleUsecase getScheduleUsecase
         ) : ControllerBase
     {
-        private readonly IQueryShowsUsecase _queryShowsUsecase = queryShowsUsecase ?? throw new ArgumentNullException(nameof(queryShowsUsecase));
+        private readonly IGetScheduleUsecase _getScheduleUsecase = getScheduleUsecase ?? throw new ArgumentNullException(nameof(getScheduleUsecase));
 
 
-        [HttpGet("")]
-        public string Get([FromQuery] DateOnly? airDate, [FromQuery] string? query)
+        [HttpGet("aired-on")]
+        [ProducesResponseType(typeof(List<Show>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<Show>>> Get([FromQuery] DateOnly airDate, [FromQuery] string? countryCode, CancellationToken ct)
         {
-            _queryShowsUsecase.Run(query);
+     
+            var shows = await _getScheduleUsecase.Run(airDate, countryCode, ct);
+            return Ok(shows);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(typeof(List<Show>), StatusCodes.Status204NoContent)]
+        public NoContentResult Delete(int id)
         {
+            return NoContent();
         }
     }
 }

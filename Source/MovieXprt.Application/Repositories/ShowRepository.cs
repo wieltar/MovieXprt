@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieXprt.Common.Models
+namespace MovieXprt.Application.Repositories
 {
-    internal class Schedule
+    internal class ShowRepository
     {
     }
 }

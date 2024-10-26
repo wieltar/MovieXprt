@@ -1,3 +1,4 @@
+using MovieXprt.Application;
 using MovieXprt.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureTvMazeApi(builder.Configuration);
-
-
+builder.Services.ConfigureUserCases();
 
 var app = builder.Build();
 
@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseAuthorization(); 
 
 app.MapControllers();
 
