@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MovieXprt.Common.Models;
 
 namespace MovieXprt.Application.Repositories
 {
-    internal class ShowRepository
+
+    public interface IShowRepository
+    {
+        void AddShows(IEnumerable<Show> showsOnPage, CancellationToken ct);
+        int getLastShow();
+        public int getPage();
+        
+    }
+
+
+    public class ShowRepository
     {
     }
 }
