@@ -3,8 +3,9 @@ A movie database builder & backend for movie xprts
 The movie database is accessable through the Rest api project.
 This application uses the Tvmaze api's backend to pull show data.
 
+
 # Current endpoints
-GET /show/aired
+GET /show/aired?airDate=yyyy-mm-dd
 - Returns a list of shows that have aired on the given date.
 
 # Project structure
@@ -51,14 +52,14 @@ This console application can be configured to run periodically as a webjob in an
 The state of the indexer is stored in the database, it will use this information to keep track of the last synchronized state when it stopped. It holds the last synchronized page.
 
 ## creating the database
-The 
-CREATE TABLE SyncState (
-    PageNo INT,
-    RunDate DATETIME
-);
+```
+CREATE DATABASE moviexprt;
+
+USE moviexprt;
 
 CREATE TABLE Shows (
     Id AS CAST(JSON_VALUE(Data, '$.Id') AS INT) PERSISTED PRIMARY KEY,
-    Id AS CAST(JSON_VALUE(Data, '$.Premiered') AS DATETIME), 
+    Premiered AS CAST(JSON_VALUE(Data, '$.Premiered') AS DATETIME), 
     Data NVARCHAR(MAX) NOT NULL CHECK (ISJSON(Data) = 1)
 );
+```
