@@ -53,6 +53,10 @@ The state of the indexer is stored in the database, it will use this information
 
 ## creating the database
 ```
+CREATE DATABASE moviexprt;
+
+USE moviexprt;
+
 CREATE TABLE Shows (
     Id AS CAST(JSON_VALUE(Data, '$.Id') AS INT) PERSISTED PRIMARY KEY,
     Premiered AS CAST(JSON_VALUE(Data, '$.Premiered') AS DATETIME), 
