@@ -4,3 +4,14 @@
 // the repository is not implemented yet, so the indexer will not be able to save the data.
 
 // While the indexer is running, the idea is to go through the api, upping the page from https://api.tvmaze.com/shows
+
+using MovieXprt.Indexer;
+
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var indexer = new Indexer();
+        await indexer.RunAsync();
+    }
+}
