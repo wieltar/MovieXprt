@@ -9,7 +9,7 @@ using TvMaze = MovieXprt.Common.Contracts.TvMaze;
 
 namespace MovieXprt.Application.Tests.UseCases
 {
-    public class GetShowsUseCaseTests : TestBase<GetScheduleUseCase>
+    public class GetScheduleUseCaseTests : TestBase<GetScheduleUseCase>
     {
         [Fact]
         public async Task GetShowsUseCase_WhenCalled_RemovesDuplicatesFromShows()
