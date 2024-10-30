@@ -2,11 +2,10 @@
 
 namespace MovieXprt.Application.Repositories
 {
-
     public interface IShowRepository
     {
         void AddShows(IEnumerable<Show> showsOnPage, CancellationToken ct);
-        int getLastShow();
+        int? getHighestShowId();
         public int getPage();
         
     }

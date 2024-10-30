@@ -24,22 +24,24 @@ public class StoreNewShowsUseCase(
 
     public async Task Run(CancellationToken ct)
     {
-        var currentPage = _showRepository.getLastShow() / PageSize;
+        var showIndex = _showRepository.getHighestShowId() ?? 1;
+        var currentPage =  showIndex / PageSize;
 
         var interestingShows = new List<Domain::Show>();
         var retrieveShows = true;
 
-        while (retrieveShows)
+        do
         {
             var showsOnPage = await _tvMazeGateway.queryShows(currentPage, ct);
 
-            retrieveShows = showsOnPage.Count > 0;
+            retrieveShows = showsOnPage.Count > 0 || !ct.IsCancellationRequested;
 
             interestingShows.AddRange(showsOnPage.Select(_mapper.Map).Where(InteresedInShow).ToList());
             _showRepository.AddShows(interestingShows, ct);
 
             currentPage++;
-        }
+
+        } while (retrieveShows);
     }
 
     private bool InteresedInShow(Domain::Show show)
