@@ -1,6 +1,6 @@
 ﻿using Polly;
 
-namespace MovieXprt.Infrastructure.Middleware
+namespace MovieXprt.Infrastructure.TvMazeClient.Middleware
 {
     public class PollyHandler(IAsyncPolicy<HttpResponseMessage> policy) : DelegatingHandler
     {

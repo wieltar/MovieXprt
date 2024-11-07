@@ -1,44 +1,44 @@
 ﻿using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MovieXprt.Domain.UseCases;
 
 namespace MovieXprt.Indexer
 {
-    public class Indexer : IHostedService, IHostedLifecycleService
+    public class Indexer(
+            IStoreNewShowsUseCase storeNewShowsUseCase,
+            IHostApplicationLifetime applicationLifetime
+        ) : IHostedService
     {
-        public Indexer() { }
+        private readonly IHostApplicationLifetime _applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
+        private readonly IStoreNewShowsUseCase _storeNewShowsUseCase = storeNewShowsUseCase ?? throw new ArgumentNullException(nameof(applicationLifetime));
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        private bool pleaseStop;
+        private Task BackgroundTask;
+        
+
+        public Task StartAsync(CancellationToken ct)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Starting service");
+
+            BackgroundTask = Task.Run(async () =>
+            {
+                while (!pleaseStop)
+                {
+                   await _storeNewShowsUseCase.Run(ct);
+                }
+                Console.WriteLine("Background task gracefully stopped");
+            }, ct);
+
+            return Task.CompletedTask;
         }
 
-        public Task StartedAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
+            Console.WriteLine("Stopping service");
 
-        public Task StartingAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+            pleaseStop = true;
+            await BackgroundTask;
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task StoppedAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task StoppingAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
+            Console.WriteLine("Service stopped");
         }
     }
 }

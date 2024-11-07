@@ -1,21 +1,20 @@
 using MovieXprt.Application;
-using MovieXprt.Infrastructure;
+using MovieXprt.Infrastructure.DataStore;
+using MovieXprt.Infrastructure.TvMazeClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.ConfigureTvMazeApi(builder.Configuration);
-builder.Services.ConfigureUserCases();
+builder.Services
+    .ConfigureDataStore(builder.Configuration)
+    .ConfigureTvMazeApi(builder.Configuration)
+    .ConfigureApplication();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

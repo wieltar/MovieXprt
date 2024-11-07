@@ -13,8 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MovieXprt.Common\MovieXprt.Common.csproj" />
-    <ProjectReference Include="..\MovieXprt.Infrastructure\MovieXprt.Infrastructure.csproj" />
+    <ProjectReference Include="..\MovieXprt.Domain\MovieXprt.Domain.csproj" />
   </ItemGroup>
 
 </Project>

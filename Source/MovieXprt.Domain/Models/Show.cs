@@ -1,4 +1,4 @@
-﻿namespace MovieXprt.Common.Models
+﻿namespace MovieXprt.Domain.Models
 {
     public sealed record Show
     {

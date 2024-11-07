@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieXprt.Application.UseCases;
-using MovieXprt.Common.Models;
+using Api.Mapper;
+using Api.Contracts;
+using MovieXprt.Domain.UseCases;
 
 
 namespace Api.Controllers
@@ -15,16 +16,16 @@ namespace Api.Controllers
 
 
         [HttpGet("aired-on")]
-        [ProducesResponseType(typeof(List<Show>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<Show>>> Get([FromQuery] DateOnly airDate, [FromQuery] string? countryCode, CancellationToken ct)
+        [ProducesResponseType(typeof(List<ShowContract>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<ShowContract>>> Get([FromQuery] DateOnly airDate, [FromQuery] string? countryCode, CancellationToken ct)
         {
      
             var shows = await _getScheduleUsecase.Run(airDate, countryCode, ct);
-            return Ok(shows);
+            return Ok(shows.Select(x => x.MapToContract()));
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(List<Show>), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(List<ShowContract>), StatusCodes.Status204NoContent)]
         public NoContentResult Delete(int id)
         {
             return NoContent();

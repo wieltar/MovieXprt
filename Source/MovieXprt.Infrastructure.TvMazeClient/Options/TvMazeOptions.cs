@@ -1,4 +1,4 @@
-﻿namespace MovieXprt.Common.Options
+﻿namespace MovieXprt.Infrastructure.TvMazeClient.Options
 {
     public class TvMazeOptions
     {

@@ -1,16 +1,11 @@
-﻿namespace MovieXprt.Infrastructure.Gateways;
+﻿namespace MovieXprt.Infrastructure.TvMazeClient.Gateways;
 
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Microsoft.Extensions.Logging;
-using MovieXprt.Common.Contracts.TvMaze;
-
-public interface ITvMazeGateway
-{
-    public Task<ICollection<Schedule>> GetSchedule(DateOnly from, string? countrycode, CancellationToken ct);
-    public Task<ICollection<Show>> queryShows(int page, CancellationToken ct);
-}
+using MovieXprt.Application.Gateways.TvMaze;
+using MovieXprt.Application.Gateways.TvMaze.Models;
 
 public class TvMazeGateway(
     IFlurlClientCache flurlClientCache,
@@ -34,7 +29,7 @@ public class TvMazeGateway(
         }
         catch (FlurlHttpException e)
         {
-            this._logger.LogError(e, "Error getting schedule from TvMaze");
+            _logger.LogError(e, "Error getting schedule from TvMaze");
             return [];
         }
     }
@@ -52,7 +47,7 @@ public class TvMazeGateway(
         }
         catch (FlurlHttpException e)
         {
-            this._logger.LogError(e, "Error getting shows from TvMaze");
+            _logger.LogError(e, "Error getting shows from TvMaze");
             return [];
         }
     }
