@@ -42,14 +42,16 @@ and 'end resource' can be defined as a
 - (SQL) database 
 - API (and specific endpoints) 
 
-## Common
-The common project has access to the models, contracts and other static classes that are to be shared accross projects.
+## Domain
+The domain project is the core of the application. It holds the models and contracts that are shared accross the application.
+This project should not have any dependencies on other projects.
 
-## Indexer (TODO)
+## Indexer 
 The indexer is a console application with which the tvmaze api can be crawled in order to build the database of shows.
 This console application can be configured to run periodically as a webjob in an Azure WebService.
 
-The state of the indexer is stored in the database, it will use this information to keep track of the last synchronized state when it stopped. It holds the last synchronized page.
+The indexer will use the infrastructure project to communicate with the tvmaze api and the MovieXprt database.
+The last inserted movie id will correspond to the last movie id in the tvmaze api, this will be used to determine the page to start crawling from.
 
 ## creating the database
 ```
