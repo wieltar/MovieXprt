@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MovieXprt.Application\MovieXprt.Application.csproj" />
+    <ProjectReference Include="..\..\Source\MovieXprt.Application\MovieXprt.Application.csproj" />
   </ItemGroup>
 
 </Project>
