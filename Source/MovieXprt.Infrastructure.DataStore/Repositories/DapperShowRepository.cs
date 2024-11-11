@@ -30,19 +30,20 @@ public class DapperShowRepository(
 
     public async Task<int> getHighestShowId()
     {
-        return await QueryAsync<int>("SELECT MAX(Id) FROM Shows", CancellationToken.None);
+        var result = await QueryAsync<int>("SELECT MAX(Id) FROM Shows", CancellationToken.None);
+        return result.FirstOrDefault(0);
     }
 
     public async Task<IEnumerable<Show>> GetShows(int page, int pageSize, CancellationToken ct)
     {
-        return await QueryAsync<IEnumerable<Show>>("SELECT [data] FROM Shows ORDER BY Premiered OFFSET @Offset ROWS FETCH NEXT @PageSize", ct, new
+        return await QueryAsync<Show>("SELECT [data] FROM Shows ORDER BY Premiered OFFSET @Offset ROWS FETCH NEXT @PageSize", ct, new
         {
             PageSize = pageSize,
             Offset = (page - 1) * pageSize
         });
     }
 
-    private async Task<T> QueryAsync<T>(string sql, CancellationToken ct, object? param = null)
+    private async Task<IEnumerable<T>> QueryAsync<T>(string sql, CancellationToken ct, object? param = null)
     {
         using var connection = new SqlConnection(_connectionString);
         connection.Open();

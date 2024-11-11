@@ -18,7 +18,7 @@ public class StoreNewShowsUseCase(
     public async Task Run(CancellationToken ct)
     {
         var showIndex = await _showRepository.getHighestShowId();
-        var currentPage =  showIndex / PageSize;
+        var currentPage =  (int) Math.Floor((double) showIndex / PageSize);
 
         var interestingShows = new List<Domain.Models.Show>();
         var retrieveShows = true;

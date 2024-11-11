@@ -8,7 +8,6 @@ namespace MovieXprt.Indexer
             IHostApplicationLifetime applicationLifetime
         ) : IHostedService
     {
-        private readonly IHostApplicationLifetime _applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
         private readonly IStoreNewShowsUseCase _storeNewShowsUseCase = storeNewShowsUseCase ?? throw new ArgumentNullException(nameof(applicationLifetime));
 
         private bool pleaseStop;
